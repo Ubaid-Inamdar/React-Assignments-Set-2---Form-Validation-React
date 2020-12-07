@@ -10,10 +10,11 @@ export default class Form extends React.Component {
       gender: "male",
       phNo: "",
       password: "",
-      userName: "",
-      errorMessage: ""
+      errorMessage: "",
+      userName: ""
     };
   }
+
   handleNameChange = (event) => {
     this.setState({ name: event.target.value });
   };
@@ -33,14 +34,15 @@ export default class Form extends React.Component {
   handleChangeValue = (event) => {
     this.setState({ gender: event.target.value });
   };
+
   handleSubmit = () => {
-    const alphanumeric = " /^[0-9a-zA-Z ]+$/;";
-    const numbers = "/^d+$/";
+    const alphanumeric = /^[0-9a-zA-Z ]+$/;
+    const numbers = /^\d+$/;
     if (
       this.state.name === "" ||
       this.state.email === "" ||
-      this.state.gender === "" ||
       this.state.phNo === "" ||
+      this.state.gender === "" ||
       this.state.password === ""
     ) {
       this.setState({ errorMessage: "All fields are mandatory", userName: "" });
@@ -54,6 +56,7 @@ export default class Form extends React.Component {
       this.setState({ errorMessage: "Email must contain @", userName: "" });
       return;
     }
+
     if (!this.state.gender) {
       this.setState({
         errorMessage: "Please identify as male, female or others",
@@ -61,37 +64,37 @@ export default class Form extends React.Component {
       });
       return;
     }
-    if (!this.state.phNo.match(numbers)) {
+    if (!numbers.test(this.state.phNo)) {
       this.setState({
-        errorMessage: " Phone Number must contain only numbers",
+        errorMessage: "Phone Number must contain only numbers",
         userName: ""
       });
       return;
     }
-    if (!this.state.password.length < 6) {
+    if (this.state.password.length < 6) {
       this.setState({
-        errorMessage: " Password must contain atleast 6 letters",
+        errorMessage: "Password must contain atleast 6 letters",
         userName: ""
       });
       return;
     }
-
     const user = this.state.email.substring(0, this.state.email.indexOf("@"));
     this.setState({
+      userName: user,
+      errorMessage: "",
       name: "",
       email: "",
       gender: "male",
       phNo: "",
-      password: "",
-      userName: user,
-      errorMessage: ""
+      password: ""
     });
   };
+
   render() {
     return (
       <>
         {this.state.errorMessage && <div>{this.state.errorMessage}</div>}
-        {this.state.userName && <div>Hello {this.state.userName} </div>}
+        {this.state.userName && <div>Hello {this.state.userName}</div>}
         Name:
         <input
           data-testid="name"
